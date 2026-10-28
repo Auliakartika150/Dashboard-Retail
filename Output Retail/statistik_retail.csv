@@ -1,0 +1,4 @@
+﻿,count,mean,median,min,max,std
+Quantity,193.0,10.6,4.0,1.0,144.0,18.87
+UnitPrice,193.0,3.0,1.69,0.12,18.0,3.11
+Gross_Revenue,193.0,17.95,10.5,0.42,165.0,26.35
