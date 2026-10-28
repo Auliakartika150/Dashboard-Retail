@@ -1,119 +1,117 @@
 # Retail Sales Dashboard
 
-## Overview
+Dashboard interaktif berbasis Streamlit untuk menganalisis kinerja penjualan retail, tren pendapatan, produk terlaris, distribusi penjualan berdasarkan negara, kanal pemasaran, dan perilaku pelanggan.
 
-Retail Sales Dashboard merupakan dashboard visualisasi data yang interaktif yang dikembangkan menggunakan Python dan Streamlit untuk membantu menganalisis data transaksi penjualan retail. Dashboard ini menyajikan informasi penjualan dalam bentuk ringkasan metrik, grafik tren penjualan, serta peringkat produk dan negara berdasarkan kinerja penjualan.
+## Tujuan
 
-Dashboard dirancang untuk mempermudah pengguna dalam memahami pola penjualan, mengidentifikasi produk dengan kontribusi penjualan tertinggi, dan melihat distribusi penjualan berdasarkan negara serta kanal pemasaran. Informasi yang ditampilkan dapat digunakan sebagai bahan evaluasi dan pendukung pengambilan keputusan bisnis berbasis data.
+Dashboard ini bertujuan untuk menjawab pertanyaan berikut:
 
-## Dashboard Preview
+1. Bagaimana tren pendapatan, jumlah pesanan, pelanggan aktif, dan unit terjual dari bulan ke bulan?
+2. Produk apa yang menghasilkan pendapatan terbesar dan produk apa yang paling banyak terjual?
+3. Negara mana yang memberikan kontribusi pendapatan terbesar?
+4. Kanal pemasaran mana yang menghasilkan pendapatan dan rata-rata pendapatan per pesanan tertinggi?
+5. Seberapa besar transaksi yang dibatalkan dalam keseluruhan data transaksi?
 
-Akses dashboard secara langsung melalui tautan berikut:
+## Data
 
-**Dashboard Retail: https://dashboard-retail-8rbmvmfhceqrqjpe3jqb5a.streamlit.app/**
+- **Sumber:** Dataset transaksi retail yang telah melalui proses pembersihan dan pengolahan.
+- **Format:** CSV.
+- **Informasi utama:** nomor invoice, kode dan nama produk, kuantitas, tanggal transaksi, harga satuan, ID pelanggan, negara, serta kanal pemasaran.
+- **Filter:** periode tanggal, negara, dan kanal pemasaran.
 
-## Features
+### Definisi metrik
 
-### 1. Key Performance Indicators (KPIs)
-Menampilkan ringkasan metrik utama untuk memberikan gambaran umum mengenai kinerja penjualan retail.
+| Metrik | Definisi |
+|---|---|
+| Total pendapatan | Jumlah `Active_Gross_Revenue` dari transaksi yang tidak dibatalkan. |
+| Jumlah pesanan | Jumlah `InvoiceNo` unik dari transaksi yang tidak dibatalkan. |
+| Pelanggan aktif | Jumlah `CustomerID` unik pada transaksi yang tidak dibatalkan. |
+| Rata-rata pendapatan per pesanan | Total pendapatan ÷ jumlah pesanan. |
+| Unit terjual | Jumlah `Quantity` pada baris produk, tanpa memasukkan baris biaya kirim. |
+| Tingkat pembatalan | Jumlah invoice yang dibatalkan ÷ seluruh invoice unik pada data yang difilter × 100%. |
+| Pendapatan per produk | Jumlah `Active_Gross_Revenue` yang dikelompokkan berdasarkan nama produk, tanpa baris biaya kirim dalam analisis produk. |
+| Pelanggan berulang | Pelanggan dengan minimal dua nomor invoice unik yang tidak dibatalkan. |
 
-### 2. Monthly Sales Trend
-Menyajikan tren penjualan bulanan untuk membantu mengidentifikasi perubahan nilai penjualan dari waktu ke waktu.
+**Catatan pengolahan:** Pendapatan dihitung menggunakan kolom `Active_Gross_Revenue`, yang didasarkan pada `Quantity × UnitPrice`, dengan pendapatan dari transaksi yang dibatalkan bernilai nol. Metrik ini mencakup biaya kirim sesuai definisi dalam kode dashboard. Pendapatan tidak sama dengan laba karena biaya operasional dan biaya lainnya tidak diperhitungkan.
 
-### 3. Top 10 Products
-Menampilkan 10 produk teratas berdasarkan nilai penjualan untuk mengetahui produk yang memberikan kontribusi penjualan terbesar.
+## Ringkasan Hasil
 
-### 4. Sales by Country
-Menyajikan informasi penjualan berdasarkan negara untuk melihat distribusi penjualan di berbagai wilayah pasar.
+Dashboard menyediakan ringkasan indikator utama yang nilainya berubah mengikuti filter periode, negara, dan kanal pemasaran yang dipilih.
 
-### 5. Marketing Channel Analysis
-Menyajikan visualisasi penjualan berdasarkan kanal pemasaran untuk membantu memahami kontribusi masing-masing kanal terhadap aktivitas penjualan.
+| Indikator | Informasi yang ditampilkan |
+|---|---|
+| Total pendapatan | Total nilai pendapatan dari transaksi yang tidak dibatalkan. |
+| Jumlah pesanan | Jumlah invoice unik yang tidak dibatalkan. |
+| Pelanggan aktif | Jumlah pelanggan unik pada transaksi yang tidak dibatalkan. |
+| Rata-rata pendapatan per pesanan | Rata-rata pendapatan untuk setiap invoice yang tidak dibatalkan. |
+| Tingkat pembatalan | Persentase invoice yang dibatalkan terhadap seluruh invoice dalam filter. |
 
-### 6. Interactive Filters
-Menyediakan filter interaktif melalui sidebar agar pengguna dapat menyesuaikan data yang ditampilkan berdasarkan pilihan yang tersedia.
+Nilai numerik ringkasan perlu dibaca langsung dari dashboard sesuai periode dan filter yang digunakan. Oleh karena itu, README ini tidak mencantumkan angka agregat yang belum diverifikasi.
 
-### 7. Business Insights and Recommendations
-Menyajikan ringkasan insight dan rekomendasi bisnis berdasarkan pola yang terlihat pada data dan hasil visualisasi dashboard.
+## Temuan Utama
 
-## Data Processing and Metric Definitions
+### 1. Tren penjualan bulanan
 
-Dashboard menggunakan data transaksi yang telah melalui proses pembersihan dan pengolahan sebelum divisualisasikan.
+- **Fakta yang dapat dianalisis:** Grafik bulanan menampilkan perubahan pendapatan, jumlah pesanan, pelanggan aktif, dan unit terjual.
+- **Analisis:** Perbandingan antarbulan dapat digunakan untuk mengidentifikasi periode dengan pendapatan tertinggi maupun perubahan volume transaksi.
+- **Saran:** Evaluasi periode dengan penjualan tertinggi dan terendah untuk mengetahui pola permintaan serta menentukan strategi penjualan berikutnya.
 
-Beberapa ketentuan pengolahan data yang digunakan meliputi:
+### 2. Produk dengan kontribusi penjualan terbesar
 
-- **Gross Revenue:** dihitung berdasarkan perkalian kuantitas barang dengan harga satuan (*Quantity × UnitPrice*).
-- **Cancelled Transactions:** transaksi yang dibatalkan dikecualikan dari data yang digunakan untuk analisis penjualan.
-- **Product Analysis:** biaya pengiriman (*Postage Fee*) tidak dimasukkan sebagai produk dalam analisis peringkat produk.
-- **Returns:** kuantitas negatif tetap dipertahankan untuk merepresentasikan transaksi pengembalian barang sesuai dengan aturan pengolahan data.
+- **Fakta yang dapat dianalisis:** Dashboard menampilkan 10 produk dengan pendapatan terbesar dan 10 produk dengan jumlah unit terjual terbanyak.
+- **Analisis:** Produk dengan pendapatan tertinggi belum tentu merupakan produk dengan volume penjualan tertinggi. Kedua indikator perlu dibandingkan untuk memahami kontribusi produk terhadap penjualan.
+- **Saran:** Prioritaskan evaluasi stok dan ketersediaan produk dengan volume penjualan tinggi. Tinjau juga produk dengan pendapatan besar untuk mempertahankan kontribusinya terhadap bisnis.
 
-**Note:** Gross Revenue pada dashboard merupakan nilai penjualan yang dihitung berdasarkan aturan pengolahan data proyek. Metrik ini tidak secara otomatis merepresentasikan laba bersih atau pendapatan bersih akuntansi.
+### 3. Distribusi pendapatan berdasarkan negara
 
-## Tech Stack
+- **Fakta yang dapat dianalisis:** Dashboard menampilkan delapan negara dengan pendapatan terbesar serta tabel yang memuat seluruh negara.
+- **Analisis:** Perbedaan pendapatan antarnegara dapat menunjukkan distribusi penjualan pada pasar yang berbeda.
+- **Saran:** Evaluasi negara dengan kontribusi pendapatan tinggi untuk mempertahankan pasar utama dan telaah negara dengan pendapatan rendah untuk mengetahui peluang pengembangan pasar.
 
-Teknologi dan library yang digunakan dalam pengembangan dashboard meliputi:
+### 4. Kinerja kanal pemasaran
 
-- **Python** — bahasa pemrograman utama.
-- **Streamlit** — membangun aplikasi dashboard interaktif.
-- **Pandas** — pengolahan dan analisis data.
-- **NumPy** — operasi numerik.
-- **Plotly Express** — membuat visualisasi data interaktif.
+- **Fakta yang dapat dianalisis:** Dashboard membandingkan pendapatan, jumlah pesanan, jumlah pelanggan, dan rata-rata pendapatan per pesanan berdasarkan kanal pemasaran.
+- **Analisis:** Kanal dengan pendapatan tertinggi belum tentu memiliki rata-rata pendapatan per pesanan tertinggi. Perbandingan beberapa metrik diperlukan untuk memahami kinerja masing-masing kanal.
+- **Saran:** Bandingkan kontribusi pendapatan dan rata-rata pendapatan per pesanan sebelum menentukan prioritas kanal pemasaran. Data pendapatan saja belum cukup untuk menyimpulkan efektivitas atau keuntungan kanal karena biaya pemasaran tidak diperhitungkan.
 
-## Project Structure
+### 5. Perilaku dan pembelian berulang pelanggan
 
-```text
-Dashboard-Retail/
-├── dashboard_retail.py
-├── requirements.txt
-└── data/
-    └── dashboard.csv
-```
+- **Fakta yang dapat dianalisis:** Dashboard membagi pelanggan menjadi dua segmen, yaitu pelanggan yang hanya melakukan satu pembelian dan pelanggan yang melakukan pembelian berulang. Dashboard juga menampilkan 10 pelanggan dengan pendapatan tertinggi.
+- **Analisis:** Perbandingan kedua segmen dapat membantu memahami pola pembelian pelanggan. Konsentrasi pendapatan pada pelanggan tertentu juga dapat menunjukkan tingkat ketergantungan penjualan terhadap pelanggan tersebut.
+- **Saran:** Evaluasi pelanggan berulang untuk memahami pola pembelian dan peluang retensi. Pelanggan dengan kontribusi pendapatan tinggi dapat dianalisis lebih lanjut untuk mengetahui kebutuhan dan karakteristik pembeliannya.
 
-*Catatan: Struktur folder di atas merupakan ilustrasi. Sesuaikan nama folder dan file data dengan struktur repository yang sebenarnya.*
+### 6. Transaksi yang dibatalkan
 
-## Run Locally
+- **Fakta yang dapat dianalisis:** Dashboard menghitung jumlah invoice yang dibatalkan dan menampilkan komposisi jenis transaksi.
+- **Analisis:** Tingkat pembatalan dapat digunakan untuk memantau proporsi pesanan yang tidak menghasilkan pendapatan dalam perhitungan dashboard.
+- **Saran:** Jika tingkat pembatalan tinggi pada periode atau negara tertentu, lakukan pemeriksaan lebih lanjut terhadap penyebab pembatalan. Data yang tersedia perlu dilengkapi dengan informasi alasan pembatalan agar penyebabnya dapat diidentifikasi.
 
-Untuk menjalankan dashboard di lingkungan lokal, ikuti langkah berikut.
+## Teknologi
+- Python
+- Pandas
+- NumPy
+- Plotly Express
+- Streamlit
 
-### 1. Clone Repository
-
+## Menjalankan Dashboard Secara Lokal
+### 1. Clone repository
 ```bash
 git clone https://github.com/Auliakartika150/Dashboard-Retail.git
 ```
-
-### 2. Navigate to Project Directory
-
+### 2. Masuk ke direktori project
 ```bash
 cd Dashboard-Retail
 ```
-
-### 3. Install Dependencies
-
-Pastikan Python sudah terpasang, kemudian jalankan:
-
+### 3. Instal dependensi
 ```bash
 pip install -r requirements.txt
 ```
-
-### 4. Run the Dashboard
-
+### 4. Jalankan aplikasi
 ```bash
 streamlit run dashboard_retail.py
 ```
-
-Setelah aplikasi berjalan, buka alamat lokal yang ditampilkan di terminal untuk mengakses dashboard melalui browser.
-
 ## Deployment
 
-Dashboard telah dipublikasikan menggunakan Streamlit Community Cloud dan dapat diakses melalui tautan berikut:
+Dashboard telah dipublikasikan melalui Streamlit Community Cloud.
 
-https://dashboard-retail-8rbmvmfhceqrqjpe3jqb5a.streamlit.app/
-
-## Objectives
-
-Proyek ini bertujuan untuk:
-
-- Menyajikan informasi transaksi retail dalam bentuk visualisasi yang mudah dipahami.
-- Mengidentifikasi tren penjualan bulanan dan produk dengan nilai penjualan tertinggi.
-- Memahami distribusi penjualan berdasarkan negara dan kanal pemasaran.
-- Mendukung proses evaluasi kinerja penjualan melalui eksplorasi data interaktif.
-- Menghasilkan insight yang dapat digunakan sebagai bahan pertimbangan dalam pengambilan keputusan bisnis.
+**Link Dashboard: https://dashboard-retail-8rbmvmfhceqrqjpe3jqb5a.streamlit.app/**
